@@ -9,6 +9,7 @@
   "author": "Sourav Yadav",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
