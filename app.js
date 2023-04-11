@@ -1,9 +1,10 @@
-//jshint esversion:6
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const exp = require("constants");
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
+
 
 const app = express();
 
@@ -12,16 +13,19 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 mongoose.connect("mongodb://127.0.0.1:27017/UserBD", {useNewUrlParser: true});
-const userSchema = {
+const userSchema = new mongoose.Schema({
     email: String,
     password: String
-}
+});
+
+userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ["password"]});
 const User = mongoose.model("User", userSchema);
 
 
 app.get("/", function(req,res){
     res.render("home");
 });
+
 
 app.route("/login")
 .get(function(req,res){
@@ -39,8 +43,7 @@ app.route("/login")
             res.render("secrets");
         }else{
             console.log("Wrong Password");
-        }
-        
+        }       
     })
 })
 
